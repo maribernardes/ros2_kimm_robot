@@ -1,0 +1,38 @@
+kimm_robot_node:
+  ros__parameters:
+    sim: true
+
+    base_frame: "proximal_ring"
+    platform_frame: "distal_ring"
+
+    publish_rate_hz: 20.0
+
+    # Home pose in ROS-native units.
+    # Translation: meters
+    # Rotation: radians
+    home_tx_m: 0.0
+    home_ty_m: 0.0
+    home_tz_m: 0.0
+    home_rx_rad: 0.0
+    home_ry_rad: 0.0
+    home_rz_rad: 0.0
+
+    # Virtual joints from kimm_description.
+    # These drive RViz visualization through /joint_states.
+    platform_joint_names:
+      - "platform_x_joint"
+      - "platform_y_joint"
+      - "platform_z_joint"
+      - "platform_roll_joint"
+      - "platform_pitch_joint"
+      - "platform_yaw_joint"
+
+    # Six actuator joints returned by KIMM IK.
+    # These are published on /kimm/state/joints.
+    actuator_joint_names:
+      - "actuator_101"
+      - "actuator_102"
+      - "actuator_103"
+      - "actuator_104"
+      - "actuator_105"
+      - "actuator_106"

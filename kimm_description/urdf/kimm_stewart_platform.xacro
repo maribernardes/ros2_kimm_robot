@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="kimm_stewart_platform">
+
+    <!--
+      The proximal ring is the physical fixed base of the KIMM robot.
+      It is also the root link of the URDF model.
+    -->
+
+    <link name="proximal_ring">
+      <visual>
+        <origin xyz="0.035 -0.125 0" rpy="0 0 1.0471975511965976"/>
+        <geometry>
+          <mesh filename="package://kimm_description/meshes/visual/base_plate.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="kimm_orange"/>
+      </visual>
+      <collision>
+        <origin xyz="0.035 -0.125 0" rpy="0 0 1.0471975511965976"/>
+        <geometry>
+          <mesh filename="package://kimm_description/meshes/visual/base_plate.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!--
+      Virtual 6-DOF serial chain used only for visualization and ROS interfaces.
+
+      This does not represent the true Stewart platform mechanism.
+      True FK/IK should remain in the KIMM kinematics library.
+    -->
+
+    <link name="platform_x"/>
+    <link name="platform_y"/>
+    <link name="platform_z"/>
+    <link name="platform_roll"/>
+    <link name="platform_pitch"/>
+
+    <link name="distal_ring">
+      <visual>
+        <origin xyz="-0.0815 0.022 0.131" rpy="0 0 -1.0471975511965976"/>
+        <geometry>
+          <mesh filename="package://kimm_description/meshes/visual/top_plate.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="kimm_blue"/>
+      </visual>
+      <collision>
+        <origin xyz="-0.0815 0.022 0.131" rpy="0 0 -1.0471975511965976"/>
+        <geometry>
+          <mesh filename="package://kimm_description/meshes/visual/top_plate.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Translation X -->
+    <joint name="platform_x_joint" type="prismatic">
+      <parent link="proximal_ring"/>
+      <child link="platform_x"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="-0.2" upper="0.2" effort="100" velocity="1.0"/>
+    </joint>
+
+    <!-- Translation Y -->
+    <joint name="platform_y_joint" type="prismatic">
+      <parent link="platform_x"/>
+      <child link="platform_y"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-0.2" upper="0.2" effort="100" velocity="1.0"/>
+    </joint>
+
+    <!--
+      Translation Z.
+
+      The joint origin defines the nominal/home height of the distal platform.
+      The joint value then represents displacement relative to this home pose.
+
+      Example:
+        platform_z_joint = 0.0  -> distal ring at z = 0.131 m
+        platform_z_joint = 0.019 -> distal ring at z = 0.15 m
+    -->
+    <joint name="platform_z_joint" type="prismatic">
+      <parent link="platform_y"/>
+      <child link="platform_z"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="0.0" upper="0.2" effort="100" velocity="1.0"/>
+    </joint>
+
+    <!-- Rotation about X -->
+    <joint name="platform_roll_joint" type="revolute">
+      <parent link="platform_z"/>
+      <child link="platform_roll"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
+      <limit lower="-1.57" upper="1.57" effort="100" velocity="1.0"/>
+    </joint>
+
+    <!-- Rotation about Y -->
+    <joint name="platform_pitch_joint" type="revolute">
+      <parent link="platform_roll"/>
+      <child link="platform_pitch"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-1.57" upper="1.57" effort="100" velocity="1.0"/>
+    </joint>
+
+    <!-- Rotation about Z -->
+    <joint name="platform_yaw_joint" type="revolute">
+      <parent link="platform_pitch"/>
+      <child link="distal_ring"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-3.14" upper="3.14" effort="100" velocity="1.0"/>
+    </joint>
+
+    <!-- Tool/probe guide frame attached to the moving platform -->
+    <link name="tool_link">
+      <visual>
+        <origin xyz="0 0 0.06" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.003" length="0.12"/>
+        </geometry>
+        <material name="kimm_green"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.06" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.003" length="0.12"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="distal_ring_to_tool_link" type="fixed">
+      <parent link="distal_ring"/>
+      <child link="tool_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+
+</robot>

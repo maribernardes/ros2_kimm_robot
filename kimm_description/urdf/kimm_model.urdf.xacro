@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="kimm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--
+    KIMM Stewart platform robot description.
+
+    Frame convention:
+      world          = scanner coordinate frame, external TF frame
+      proximal_ring  = KIMM robot base link / fixed physical base
+      distal_ring    = moving platform
+      tool_link      = probe/needle guide frame
+
+    Important:
+      This URDF does NOT define the world frame.
+      The transform world -> proximal_ring is handled in launch for now,
+      and later should come from registration/calibration.
+  -->
+
+  <xacro:include filename="$(find kimm_description)/urdf/materials.xacro"/>
+  <xacro:include filename="$(find kimm_description)/urdf/kimm_stewart_platform.xacro"/>
+
+  <xacro:kimm_stewart_platform/>
+
+</robot>
