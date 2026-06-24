@@ -142,6 +142,9 @@ def pose_dict_to_virtual_joint_state(pose, joint_names, stamp):
         float(pose["rz_rad"]),
     ]
 
+    msg.velocity = [0.0] * len(msg.name)
+    msg.effort = [0.0] * len(msg.name)
+
     return msg
 
 
@@ -155,5 +158,9 @@ def actuator_positions_to_joint_state(actuator_positions_rad, joint_names, stamp
     msg.header.stamp = stamp
     msg.name = list(joint_names)
     msg.position = [float(x) for x in actuator_positions_rad]
+
+    msg.velocity = [0.0] * len(msg.name)
+    msg.effort = [0.0] * len(msg.name)
+
 
     return msg

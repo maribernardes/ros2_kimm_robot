@@ -41,6 +41,8 @@ class SimulatedBridge(BaseBridge):
         kimm_input = pose_dict_to_kimm_input(pose)
         actuator_positions_rad = self.kinematics.solve_ik(kimm_input)
 
+        # No FK is currently available.
+        # We report the latest accepted commanded platform pose as the assumed state.
         self.current_pose = dict(pose)
         self.actuator_positions_rad = list(actuator_positions_rad)
 

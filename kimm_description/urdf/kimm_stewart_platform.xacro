@@ -38,6 +38,7 @@
     <link name="platform_z"/>
     <link name="platform_roll"/>
     <link name="platform_pitch"/>
+    <link name="platform_yaw"/>
 
     <link name="distal_ring">
       <visual>
@@ -78,12 +79,7 @@
     <!--
       Translation Z.
 
-      The joint origin defines the nominal/home height of the distal platform.
-      The joint value then represents displacement relative to this home pose.
-
-      Example:
-        platform_z_joint = 0.0  -> distal ring at z = 0.131 m
-        platform_z_joint = 0.019 -> distal ring at z = 0.15 m
+      The joint value represents displacement relative to this home pose.
     -->
     <joint name="platform_z_joint" type="prismatic">
       <parent link="platform_y"/>
@@ -114,10 +110,17 @@
     <!-- Rotation about Z -->
     <joint name="platform_yaw_joint" type="revolute">
       <parent link="platform_pitch"/>
-      <child link="distal_ring"/>
+      <child link="platform_yaw"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit lower="-3.14" upper="3.14" effort="100" velocity="1.0"/>
+    </joint>
+
+    <!-- Attach distal ring mesh to the final virtual yaw frame -->
+    <joint name="platform_yaw_to_distal_ring" type="fixed">
+      <parent link="platform_yaw"/>
+      <child link="distal_ring"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
     <!-- Tool/probe guide frame attached to the moving platform -->
