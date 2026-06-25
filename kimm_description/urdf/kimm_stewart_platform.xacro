@@ -10,7 +10,7 @@
 
     <link name="proximal_ring">
       <visual>
-        <origin xyz="0.035 -0.125 0" rpy="0 0 1.0471975511965976"/>
+        <origin xyz="0.035 -0.125 -0.133" rpy="0 0 1.0471975511965976"/>
         <geometry>
           <mesh filename="package://kimm_description/meshes/visual/base_plate.stl"
                 scale="0.001 0.001 0.001"/>
@@ -18,7 +18,7 @@
         <material name="kimm_orange"/>
       </visual>
       <collision>
-        <origin xyz="0.035 -0.125 0" rpy="0 0 1.0471975511965976"/>
+        <origin xyz="0.035 -0.125 -0.133" rpy="0 0 1.0471975511965976"/>
         <geometry>
           <mesh filename="package://kimm_description/meshes/visual/base_plate.stl"
                 scale="0.001 0.001 0.001"/>
@@ -42,7 +42,7 @@
 
     <link name="distal_ring">
       <visual>
-        <origin xyz="-0.0815 0.022 0.131" rpy="0 0 -1.0471975511965976"/>
+        <origin xyz="-0.0815 0.022 0" rpy="0 0 -1.0471975511965976"/>
         <geometry>
           <mesh filename="package://kimm_description/meshes/visual/top_plate.stl"
                 scale="0.001 0.001 0.001"/>
@@ -50,7 +50,7 @@
         <material name="kimm_blue"/>
       </visual>
       <collision>
-        <origin xyz="-0.0815 0.022 0.131" rpy="0 0 -1.0471975511965976"/>
+        <origin xyz="-0.0815 0.022 0" rpy="0 0 -1.0471975511965976"/>
         <geometry>
           <mesh filename="package://kimm_description/meshes/visual/top_plate.stl"
                 scale="0.001 0.001 0.001"/>

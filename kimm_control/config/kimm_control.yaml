@@ -36,3 +36,25 @@ kimm_robot_node:
       - "actuator_104"
       - "actuator_105"
       - "actuator_106"
+
+kimm_hardware_bridge:
+  ros__parameters:
+    auto_activate: true
+    zero_on_activate: true
+    zero_position_counts: [2048, 2048, 2048, 2048, 2048, 2048]
+    zero_after_torque_delay_sec: 0.10
+    
+    publish_rate_hz: 50.0
+    deadband_rad: 0.00001
+
+    hardware_port: "/dev/ttyUSB0"
+    baudrate: 57600
+    protocol_version: 2.0
+
+    dxl_ids: [101, 102, 103, 104, 105, 106]
+    dxl_center: 2048
+
+    dxl_odd_min: 1707
+    dxl_odd_max: 2389
+    dxl_even_min: 1707
+    dxl_even_max: 2389

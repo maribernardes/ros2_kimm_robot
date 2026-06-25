@@ -42,6 +42,8 @@ setup(
     entry_points={
         "console_scripts": [
             "kimm_robot_node = kimm_control.kimm_robot_node:main",
+            "simulated_bridge_node = kimm_control.simulated_bridge:main",
+            "hardware_bridge_node = kimm_control.hardware_bridge:main",
         ],
     },
 )

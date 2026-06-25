@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -53,7 +53,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "sim",
             default_value="true",
-            description="Use simulated hardware bridge if true.",
+            description="Use simulated bridge if true; hardware bridge if false.",
         ),
 
         DeclareLaunchArgument(
@@ -81,10 +81,6 @@ def generate_launch_description():
         DeclareLaunchArgument("pitch", default_value="0.0"),
         DeclareLaunchArgument("yaw", default_value="0.0"),
 
-        # Temporary registration transform:
-        #   world/scanner -> proximal_ring
-        #
-        # Later, this should be replaced by the registration node.
         Node(
             package="tf2_ros",
             executable="static_transform_publisher",
@@ -112,10 +108,29 @@ def generate_launch_description():
             output="screen",
             parameters=[
                 control_config_file,
-                {
-                    "sim": ParameterValue(sim, value_type=bool),
-                },
             ],
+        ),
+
+        Node(
+            package="kimm_control",
+            executable="simulated_bridge_node",
+            name="kimm_simulated_bridge",
+            output="screen",
+            parameters=[
+                control_config_file,
+            ],
+            condition=IfCondition(sim),
+        ),
+
+        Node(
+            package="kimm_control",
+            executable="hardware_bridge_node",
+            name="kimm_hardware_bridge",
+            output="screen",
+            parameters=[
+                control_config_file,
+            ],
+            condition=UnlessCondition(sim),
         ),
 
         Node(
